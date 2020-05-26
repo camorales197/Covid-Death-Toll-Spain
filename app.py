@@ -65,10 +65,10 @@ def filtering_momo(momo, selected_sex, selected_age, selected_communities):
 def contagiuous(momo, days_to_death, mortality_rate, days_to_delete):
     momo = momo.iloc[:-days_to_delete, :]
     momo["Contagiados"] = momo["observed_deaths"] / mortality_rate
-    momo["Contagiados"] = momo["Contagiados"].shift(periods=days_to_death, fill_value=None)
+    momo["Contagiados"] = momo["Contagiados"].shift(periods=-days_to_death, fill_value=None)
     momo["Exceso de Defunciones"] = momo["observed_deaths"] - momo["expected_deaths"]
 
-    start_date = '2020-03-02'
+    start_date = '2020-02-01'
     end_date = max(momo["date"])
 
     momo = momo.set_index("date").resample('W-SUN').sum()  # .iloc[0:-1,]
