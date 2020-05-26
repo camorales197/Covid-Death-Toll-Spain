@@ -99,7 +99,7 @@ def plot_timeline(momo, variable, selected_communities, selected_age, selected_s
 
 
 st.title('Analizando el impacto del Covid-19 por Comunidad Autónoma')
-momo_raw, sex, regions, age = get_data(online=False)
+momo_raw, sex, regions, age = get_data(online=True)
 
 selected_communities, selected_age, selected_sex, days_to_delete, mortality_rate, days_to_death = user_filters(sex, regions, age)
 
