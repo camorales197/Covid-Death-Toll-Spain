@@ -5,7 +5,7 @@ import streamlit as st
 import plotly.graph_objects as go
 
 
-#@st.cache
+@st.cache
 def get_data(online=True):
     if online == True:
         url = "https://momo.isciii.es/public/momo/data"
