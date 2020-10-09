@@ -26,7 +26,8 @@ def get_data(online=True):
 
 
 def user_filters(sex, regions, age):
-    st.sidebar.text("Selecciona los filtros a aplicar")
+    st.sidebar.text("Como algunos de estos valores no están del todo claro, dejamos al usuario que pueda probar "
+                    "con diferentes valores ")
     selected_communities = st.sidebar.selectbox('Region', regions)
     selected_age = st.sidebar.selectbox('Grupos de Edad', age)
     selected_sex = st.sidebar.selectbox('Sexo', sex)
@@ -35,9 +36,9 @@ def user_filters(sex, regions, age):
                                        'Por lo que recomendamos no considerar los ultimos días.'
                                        '¿Cuantos días quieres quitar?', 1, 21, 14)
 
-    mortality_rate = st.sidebar.slider('Mortalidad del Virus', min_value=0.0, max_value=20.0, value=1.0, step=0.1,
+    mortality_rate = st.sidebar.slider('Mortalidad del Virus', min_value=0.1, max_value=5.0, value=1.0, step=0.1,
                                        format="%.2f%%")
-    days_to_death = st.sidebar.slider('Días medios desde contagio hasta fallecimiento', min_value=7, max_value=30,
+    days_to_death = st.sidebar.slider('Días medios desde contagio hasta fallecimiento', min_value=10, max_value=25,
                                       value=18, step=1)
 
     return selected_communities, selected_age, selected_sex, days_to_delete, mortality_rate, days_to_death
@@ -102,10 +103,11 @@ def plot_timeline(momo, variable, selected_communities, selected_age, selected_s
 
 
 def main():
-    st.title('Analizando el impacto del Covid-19 por Comunidad Autónoma')
     momo_raw, sex, regions, age = get_data(online=True)
 
     selected_communities, selected_age, selected_sex, days_to_delete, mortality_rate, days_to_death = user_filters(sex, regions, age)
+
+    st.title('Analizando fallecidos y contagiados por el Covid-19 en ' + str(selected_communities).strip())
 
     momo = filtering_momo(momo_raw, selected_sex, selected_age, selected_communities)
 
@@ -121,9 +123,9 @@ def main():
 
 
 
-    st.write("En el siguiente gráfico se pueden observar "
-             "las diferencias entre fallecimientos esperados y fallecimientos observados en "
-             + str(selected_communities) + ". Estas diferencias son atribuibles principalmente al Covid-19")
+    st.write("A continuación, teniendo en cuenta el porcentaje de mortalidad del virus seleccionado, se muestra una "
+             "aproximación de los contagiados en "
+             + str(selected_communities) + ".")
 
     plot_timeline(momo, variable="Contagiados",
                   selected_communities=selected_communities, selected_age=selected_age, selected_sex=selected_sex)
