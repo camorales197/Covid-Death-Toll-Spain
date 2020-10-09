@@ -33,11 +33,11 @@ def user_filters(sex, regions, age):
 
     days_to_delete = st.sidebar.slider('La información sobre los últimos días no es del todo fiable. '
                                        'Por lo que recomendamos no considerar los ultimos días.'
-                                       '¿Cuantos días quieres quitar?', 1, 7, 7)
+                                       '¿Cuantos días quieres quitar?', 1, 21, 14)
 
-    mortality_rate = st.sidebar.slider('Mortalidad del Virus', min_value=0.0, max_value=2.0, value=1.0, step=0.1,
+    mortality_rate = st.sidebar.slider('Mortalidad del Virus', min_value=0.0, max_value=20.0, value=1.0, step=0.1,
                                        format="%.2f%%")
-    days_to_death = st.sidebar.slider('Días medios desde contagio hasta fallecimiento', min_value=10, max_value=25,
+    days_to_death = st.sidebar.slider('Días medios desde contagio hasta fallecimiento', min_value=7, max_value=30,
                                       value=18, step=1)
 
     return selected_communities, selected_age, selected_sex, days_to_delete, mortality_rate, days_to_death
@@ -64,9 +64,13 @@ def filtering_momo(momo, selected_sex, selected_age, selected_communities):
 
 def contagiuous(momo, days_to_death, mortality_rate, days_to_delete):
     momo = momo.iloc[:-days_to_delete, :]
-    momo["Contagiados"] = momo["observed_deaths"] / mortality_rate
-    momo["Contagiados"] = momo["Contagiados"].shift(periods=-days_to_death, fill_value=None)
+
     momo["Exceso de Defunciones"] = momo["observed_deaths"] - momo["expected_deaths"]
+
+    momo['Exceso de Defunciones'].loc[(momo['Exceso de Defunciones'] < 0)] = 0
+
+    momo["Contagiados"] = momo["Exceso de Defunciones"] / mortality_rate
+    momo["Contagiados"] = momo["Contagiados"].shift(periods=-days_to_death, fill_value=None)
 
     start_date = '2020-02-01'
     end_date = max(momo["date"])
@@ -110,7 +114,7 @@ def main():
 
     st.write("En el siguiente gráfico se pueden observar "
              "las diferencias entre fallecimientos esperados y fallecimientos observados en "
-             + str(selected_communities) + ". Estas diferencias son atribuibles principalmente al Covid-19")
+             + str(selected_communities) + ". Asumimos que estas diferencias son provocadas por el Covid-19")
 
     plot_timeline(momo, variable="Exceso de Defunciones",
                   selected_communities=selected_communities, selected_age=selected_age, selected_sex=selected_sex)
