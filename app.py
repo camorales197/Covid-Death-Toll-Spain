@@ -116,7 +116,8 @@ def main():
 
     st.write("En el siguiente gráfico se pueden observar "
              "las diferencias entre fallecimientos esperados y fallecimientos observados en "
-             + str(selected_communities) + ". Asumimos que estas diferencias son provocadas por el Covid-19")
+             + str(selected_communities) + ". Asumimos que estas diferencias son provocadas por el Covid-19. "
+                                           "Los valores están agruapdos por semana")
 
     plot_timeline(momo, variable="Exceso de Defunciones",
                   selected_communities=selected_communities, selected_age=selected_age, selected_sex=selected_sex)
@@ -125,10 +126,25 @@ def main():
 
     st.write("A continuación, teniendo en cuenta el porcentaje de mortalidad del virus seleccionado, se muestra una "
              "aproximación de los contagiados en "
-             + str(selected_communities) + ".")
+             + str(selected_communities) + ". Los valores están agrupados por semana")
 
     plot_timeline(momo, variable="Contagiados",
                   selected_communities=selected_communities, selected_age=selected_age, selected_sex=selected_sex)
+
+    st.write("")
+    st.write("¿Alguna conclusión o comentario interesante? ")
+
+    if st.button('Puedes contactarme aquí. '):
+        js = "window.open('https://www.linkedin.com/in/carloscamorales')"  # New tab or window
+        html = '<img src onerror="{}">'.format(js)
+        div = Div(text=html)
+        st.bokeh_chart(div)
+
+    if st.button('Puedes encontrar el código en el siguiente enlace.'):
+        js = "window.open('https://github.com/camorales197/covid-app')"  # New tab or window
+        html = '<img src onerror="{}">'.format(js)
+        div = Div(text=html)
+        st.bokeh_chart(div)
 
 
 if __name__ == '__main__':
