@@ -3,6 +3,8 @@ import requests
 import io
 import streamlit as st
 import plotly.graph_objects as go
+from bokeh.models.widgets import Div
+
 
 
 @st.cache
@@ -132,7 +134,7 @@ def main():
                   selected_communities=selected_communities, selected_age=selected_age, selected_sex=selected_sex)
 
     st.write("")
-    st.write("¿Alguna conclusión o comentario interesante? ")
+    st.write("¿Alguna conclusión o comentario que te gustaría compartir? ")
 
     if st.button('Puedes contactarme aquí. '):
         js = "window.open('https://www.linkedin.com/in/carloscamorales')"  # New tab or window
