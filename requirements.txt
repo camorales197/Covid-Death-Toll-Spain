@@ -2,5 +2,5 @@ pandas==0.25.3
 requests==2.23.0
 streamlit==0.59.0
 plotly==4.4.1
-boked==2.2.1
+boked
 Image==1.5.32
