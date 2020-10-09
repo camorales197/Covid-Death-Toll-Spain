@@ -3,4 +3,4 @@ requests==2.23.0
 streamlit==0.59.0
 plotly==4.4.1
 boked
-Pillow==6.2.2
+Image
